@@ -20,7 +20,7 @@ services:
         - influxdb
       volumes:
         # Mount for telegraf configuration
-        - ./telegraf-influxdb.conf:/etc/telegraf/telegraf.conf:ro
+        - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
         # Mount for Docker API access
         - /var/run/docker.sock:/var/run/docker.sock
       restart: always
