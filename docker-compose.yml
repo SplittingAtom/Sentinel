@@ -1,0 +1,58 @@
+version: '3'
+services:
+    influxdb:
+      image: influxdb:1.8.3
+      container_name: influxdb
+      ports:
+        - "8083:8083"
+        - "8086:8086"
+        - "8082:8082"
+        - "8090:8090"
+      volumes:
+        # Mount for influxdb data directory
+        - ./influxdb/data:/var/lib/influxdb
+      restart: always
+
+    telegraf:
+      image: telegraf:latest
+      container_name: telegraf
+      links:
+        - influxdb
+      volumes:
+        # Mount for telegraf configuration
+        - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+        # Mount for Docker API access
+        - /var/run/docker.sock:/var/run/docker.sock
+      restart: always
+
+    chronograf:
+      image: chronograf:latest
+      environment:
+        RESOURCES_PATH: "/usr/share/chronograf/resources"
+      volumes:
+        # Mount for chronograf database
+        - ./chronograf/data/:/var/lib/chronograf/
+      links:
+        - influxdb
+      ports:
+        # The WebUI for Chronograf is served on port 8888
+        - "8888:8888"
+      depends_on:
+        - influxdb
+        - telegraf
+      restart: always
+
+    grafana:
+      image: grafana/grafana:latest
+      container_name: grafana
+      ports:
+        - "3000:3000"
+      environment:
+        - GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
+      user: "0"
+      links:
+        - influxdb
+      volumes:
+        # Data persistency
+        - ./grafana/data:/var/lib/grafana/
+      restart: always
