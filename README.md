@@ -6,7 +6,7 @@
 
 
 #Grafana Setup
-1.  From a browser, goto http://<ip address of machine>:3000
+1.  From a browser, goto http://ip_address_of_machine:3000
 2.  Enter **admin** for the user and **admin** for the password
 3.  At this point you may be asked to create a new password.  Create one
 4.  Select Configuration and Data Sources from left menu bar
