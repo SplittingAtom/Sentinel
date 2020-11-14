@@ -1,6 +1,6 @@
 # Telegraf - Influx - Grafana - Chronograf Setup
 1.  Clone this repo to your server (Centos preferred)
-2.  cd sentinel 
+2.  cd Sentinel 
 3.  Run the setup script. (ex ". setup.sh")
 
 
